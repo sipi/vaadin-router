@@ -59,7 +59,12 @@ function createRedirect(context, pathname) {
 
 function renderComponent(context, component) {
   const element = document.createElement(component);
-  element.location = createLocation(context);
+  const params = createLocation(context).params;
+  for(var prop in params) {
+    if (params.hasOwnProperty(prop) && params[prop] && /^[a-z]/.test(prop)) {
+        element.setAttribute(prop, params[prop]);
+    }
+  }
   const index = context.chain.map(item => item.route).indexOf(context.route);
   context.chain[index].element = element;
   return element;
